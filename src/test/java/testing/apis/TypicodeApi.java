@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import testing.models.Post;
 import testing.models.ToDo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public class TypicodeApi extends BaseApi{
     }
 
     Response apiPost(String path, Map<String, String> paramsMap) {
-        return assertCodeAndExtract(200, with().params(paramsMap).post(path));
+        return assertCodeAndExtract(201, with().body(paramsMap).post(path));
     }
 
     Response assertCodeAndExtract(int code, Response response) {
@@ -68,6 +69,15 @@ public class TypicodeApi extends BaseApi{
         return getList(Post.class, "/user/" + userId + "/posts");
     }
 
-
+    public Response postPost(String title, String body, Integer userId) {
+        var requestBody = new HashMap<String, String>();
+        requestBody.put("title", title);
+        requestBody.put("body", body);
+        requestBody.put("userId", String.valueOf(userId));
+        return apiPost(
+                "/posts",
+                requestBody
+        );
+    }
 
 }

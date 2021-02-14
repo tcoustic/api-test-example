@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import testing.apis.TypicodeApi;
+import testing.models.Post;
 
 import java.util.ArrayList;
 
@@ -48,6 +49,18 @@ public class PostTest {
         assertEquals(
                 usersPosts,
                 typicodeApi.getPostsForUser(userId).size()
+        );
+    }
+
+    @Test
+    void postCreationTest() {
+        var id = 101;
+        var userId =  1;
+        var title =  "Test Title";
+        var body = "Test Body";
+        assertEquals(
+                id,
+                typicodeApi.postPost(title, body, userId).jsonPath().getInt("id")
         );
     }
 
