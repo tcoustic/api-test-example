@@ -1,11 +1,11 @@
 package testing.models;
 
-public class ToDo {
+public class Post {
 
     int userId;
     int id;
     String title;
-    boolean completed;
+    String body;
 
     public int getUserId() {
         return userId;
@@ -19,8 +19,8 @@ public class ToDo {
         return title;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public String getBody() {
+        return body;
     }
 
 }

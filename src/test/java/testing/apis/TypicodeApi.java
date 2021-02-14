@@ -1,6 +1,7 @@
 package testing.apis;
 
 import io.restassured.response.Response;
+import testing.models.Post;
 import testing.models.ToDo;
 
 import java.util.List;
@@ -35,16 +36,36 @@ public class TypicodeApi extends BaseApi{
                 .extract().response();
     }
 
+    private <T> T getElement(Class<T> element, String path, int id) {
+        return apiGet(path + id).as(element);
+    }
+
     private <T> List<T> getList(Class<T> model, String path) {
         return apiGet(path).jsonPath().getList("", model);
+    }
+
+    public ToDo getTodo(int id) {
+        return getElement(ToDo.class,"/todos/", id);
+    }
+
+    public Post getPost(int id) {
+        return getElement(Post.class, "/posts/", id);
     }
 
     public List<ToDo> getTodos() {
         return getList(ToDo.class, "/todos");
     }
 
-    public ToDo getTodo(int id) {
-        return apiGet("/todos/" + id).as(ToDo.class);
+    public List<ToDo> getTodosForUser(Integer userId) {
+        return getList(ToDo.class, "/user/" + userId + "/todos");
+    }
+
+    public List<Post> getPosts() {
+        return getList(Post.class, "/posts");
+    }
+
+    public List<Post> getPostsForUser(Integer userId) {
+        return getList(Post.class, "/user/" + userId + "/posts");
     }
 
 
