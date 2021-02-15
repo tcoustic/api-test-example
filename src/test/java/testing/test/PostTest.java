@@ -5,11 +5,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import testing.apis.TypicodeApi;
-import testing.models.Post;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PostTest {
@@ -32,15 +32,15 @@ public class PostTest {
 
     @Test
     void postTest() {
-        var toDo = typicodeApi.getPost(3);
+        var post = typicodeApi.getPost(3);
         assertAll(
-                () -> assertEquals("ea molestias quasi exercitationem repellat qui ipsa sit aut", toDo.getTitle(), "Title"),
+                () -> assertEquals("ea molestias quasi exercitationem repellat qui ipsa sit aut", post.getTitle(), "Title"),
                 () -> assertEquals("et iusto sed quo iure\n" +
                         "voluptatem occaecati omnis eligendi aut ad\n" +
                         "voluptatem doloribus vel accusantium quis pariatur\n" +
-                        "molestiae porro eius odio et labore et velit aut", toDo.getBody(), "Body"),
-                () -> assertEquals(1, toDo.getUserId(), "User ID"),
-                () -> assertEquals(3, toDo.getId(), "ID"));
+                        "molestiae porro eius odio et labore et velit aut", post.getBody(), "Body"),
+                () -> assertEquals(1, post.getUserId(), "User ID"),
+                () -> assertEquals(3, post.getId(), "ID"));
     }
 
     @ParameterizedTest
@@ -60,9 +60,27 @@ public class PostTest {
         var body = "Test Body";
         assertEquals(
                 id,
-                typicodeApi.postPost(title, body, userId).jsonPath().getInt("id")
+                typicodeApi.postPost(userId, title, body).jsonPath().getInt("id")
         );
     }
 
+    @Test
+    void postUpdateTest() {
+
+        var id = 2;
+        var title =  "Changed Title";
+        var body = "Changed Body";
+        var requestBody = new HashMap<String, String>();
+        requestBody.put("title", title);
+        requestBody.put("body", body);
+        var updatedPost =
+                typicodeApi.updatePost(id, requestBody);
+        assertAll(
+                () -> assertEquals(title, updatedPost.getTitle(), "Title"),
+                () -> assertEquals(body, updatedPost.getBody(), "Body"),
+                () -> assertEquals(1, updatedPost.getUserId(), "User ID"),
+                () -> assertEquals(2, updatedPost.getId(), "ID"));
+
+    }
 
 }

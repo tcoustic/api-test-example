@@ -23,6 +23,11 @@ public class TypicodeApi extends BaseApi{
         return assertCodeAndExtract(201, with().body(paramsMap).post(path));
     }
 
+    Response apiPatch(String path, Map<String, String> paramsMap) {
+        info("Requesting patch to " + path + " with " + paramsMap);
+        return assertCodeAndExtract(200, with().formParams(paramsMap).patch(path));
+    }
+
     Response assertCodeAndExtract(int code, Response response) {
         return response
                 .then()
@@ -63,7 +68,7 @@ public class TypicodeApi extends BaseApi{
         return getList(Post.class, "/user/" + userId + "/posts");
     }
 
-    public Response postPost(String title, String body, Integer userId) {
+    public Response postPost(int userId, String title, String body) {
         var requestBody = new HashMap<String, String>();
         requestBody.put("title", title);
         requestBody.put("body", body);
@@ -72,6 +77,16 @@ public class TypicodeApi extends BaseApi{
                 "/posts",
                 requestBody
         );
+    }
+
+    public ToDo updateToDo(int id, boolean completed) {
+        var requestBody = new HashMap<String, String>();
+        requestBody.put("completed", String.valueOf(completed));
+        return apiPatch("/todos/" + id, requestBody).as(ToDo.class);
+    }
+
+    public Post updatePost(int id, HashMap<String, String> requestBody) {
+        return apiPatch("/posts/" + id, requestBody).as(Post.class);
     }
 
 }

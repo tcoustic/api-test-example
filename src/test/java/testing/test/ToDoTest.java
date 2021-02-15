@@ -47,4 +47,9 @@ public class ToDoTest extends BaseTest {
         );
     }
 
+    @Test
+    void updateToDo() {
+        assertTrue(typicodeApi.updateToDo(45, true).isCompleted());
+    }
+
 }
