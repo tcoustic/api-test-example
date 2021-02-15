@@ -14,18 +14,12 @@ public class TypicodeApi extends BaseApi{
 
     
     Response apiGet(String path) {
+        info("Requesting get from " + path);
         return assertCodeAndExtract(200, get(path));
-    }
-    
-    Response apiGet(String path, Map<String, String> paramsMap) {
-        return assertCodeAndExtract(200, with().params(paramsMap).get(path));
-    }
-
-    Response apiPost(String path) {
-        return assertCodeAndExtract(200, post(path));
     }
 
     Response apiPost(String path, Map<String, String> paramsMap) {
+        info("Requesting post to " + path + " with " + paramsMap);
         return assertCodeAndExtract(201, with().body(paramsMap).post(path));
     }
 
